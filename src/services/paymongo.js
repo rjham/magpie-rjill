@@ -1,13 +1,13 @@
 import postData from "../helpers/postData";
 
-const magpie = {};
+const paymongo = {};
 
 const errorObj = obj => {
   return { code: obj.code, message: obj.detail };
 };
 
-magpie.createToken = data => {
-  const postUrl = "https://api.magpie.im/v1/tokens";
+paymongo.createToken = data => {
+  const postUrl = "https://api.paymongo.com/v1/tokens";
 
   return new Promise((resolve, reject) => {
     if (!data) {
@@ -23,8 +23,8 @@ magpie.createToken = data => {
   });
 };
 
-magpie.createPayment = data => {
-  const postUrl = "https://api.magpie.im/v1/charges";
+paymongo.createPayment = data => {
+  const postUrl = "https://api.paymongo.com/v1/payments";
 
   return new Promise((resolve, reject) => {
     if (!data) {
@@ -40,4 +40,4 @@ magpie.createPayment = data => {
   });
 };
 
-export default magpie;
+export default paymongo;

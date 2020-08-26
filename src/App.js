@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import magpie from "./services/magpie";
+import paymongo from "./services/paymongo";
 import _ from "lodash";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -17,50 +17,6 @@ import Checkout from "./components/Checkout";
 import FooterNavigation from "./components/FooterNavigation";
 import useColorScheme from "./hooks/useColorScheme";
 import grey from "@material-ui/core/colors/grey";
-
-
-
-
-// const Magpie = require('magpie-js-sdk');
-// const sandbox = true;
-// const public_key = 'pk_test_sYorXrJmYCT4cAl4U6Y9Hg';
-// const secret_key = 'sk_test_65ObRyp13oxOyLvw65I2sQ';
-
-
-// const version = 'v1.1';
-// const magpies = new Magpie(public_key, secret_key, sandbox, version);
-
-
-// const card = {
-//     name: 'Juan de la Cruz',
-//     number: '5555555555554444',
-//     exp_month: '02',
-//     exp_year: '2022',
-//     cvv: '123'
-// }
-
-// magpies.token.create(card.name, card.number, card.exp_month, card.exp_year, card.cvv)
-//     .then(response => {
-//       console.log('dsd', response)
-//         // // We will actually just log response to console :)
-//         // if (response.statusCode === 201) {
-//         //     // Success
-//         //     console.log(JSON.stringify(response, null, 2));
-//         // } else {
-//         //     // Error
-//         //     console.log(response);
-//         // }
-//     });
-
-
-
-
-
-
-
-
-
-
 
 const useStyles = bgColor => {
   const bg = bgColor ? { backgroundColor: bgColor } : {};
@@ -157,16 +113,36 @@ const App = () => {
       exp_month,
       exp_year,
       cvc,
+      line1,
+      city,
+      state,
+      country,
+      postal_code,
       name,
+      email,
+      phone
     } = billingInfo;
 
-    const magPieTokenData = {
-      card: {
-        number,
-        exp_month: parseInt(exp_month),
-        exp_year: parseInt(exp_year),
-        cvc,
-        name
+    const paymongoTokenData = {
+      data: {
+        attributes: {
+          number,
+          exp_month: parseInt(exp_month),
+          exp_year: parseInt(exp_year),
+          cvc,
+          billing: {
+            name,
+            email,
+            phone,
+            address: {
+              line1,
+              city,
+              state,
+              country,
+              postal_code
+            }
+          }
+        }
       }
     };
 
@@ -195,13 +171,13 @@ const App = () => {
     setPaymentTransitiondDelay(true);
     setErrors(null);
 
-    magpie
-      .createToken(magPieTokenData)
+    paymongo
+      .createToken(paymongoTokenData)
       .then(result => {
         const tokenId = result.data.id;
         const tokenType = result.data.type;
 
-        magpie
+        paymongo
           .createPayment(paymongoPaymentData(tokenId, tokenType))
           .then(data => {
             setOrderCompleteData(data);

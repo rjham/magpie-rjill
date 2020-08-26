@@ -347,7 +347,7 @@ const CheckoutForm = ({
               fullWidth
               onClick={handlePayment}
             >
-              Pay with magpie
+              Pay with PayMongo
             </Button>
           </Paper>
         </form>

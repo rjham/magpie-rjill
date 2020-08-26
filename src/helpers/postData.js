@@ -5,8 +5,8 @@ const errorData = (code, detail) => {
 };
 
 const postData = async (url, data, key) => {
-  const publicKey = process.env.REACT_APP_MAGPIE_BASE64_PUBLIC_KEY;
-  const secretKey = process.env.REACT_APP_MAGPIE_BASE64_SECRET_KEY;
+  const publicKey = process.env.REACT_APP_PAYMONGO_BASE64_PUBLIC_KEY;
+  const secretKey = process.env.REACT_APP_PAYMONGO_BASE64_SECRET_KEY;
   const authCode =
     key === "public" ? publicKey : key === "secret" ? secretKey : null;
 
@@ -22,9 +22,8 @@ const postData = async (url, data, key) => {
     headers: {
       accept: "application/json",
       "content-type": "application/json",
-      Authorization: `Basic ${encode(authCode)}`,
+      authorization: `Basic ${encode(authCode)}`
     },
-    // referrerPolicy: 'no-referrer',
     body: JSON.stringify(data)
   });
 
